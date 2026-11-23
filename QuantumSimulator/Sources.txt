@@ -1,0 +1,3 @@
+Sources I used to code this library:
+
+- How to write a simulator for Quantum circuits from scratch: https://arxiv.org/pdf/2506.08142
