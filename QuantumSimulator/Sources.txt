@@ -1,3 +1,5 @@
 Sources I used to code this library:
 
-- How to write a simulator for Quantum circuits from scratch: https://arxiv.org/pdf/2506.08142
+- How to write a simulator for Quantum circuits from scratch: 
+    - https://arxiv.org/pdf/2506.08142
+    - https://scipost.org/preprints/scipost_202508_00028v1/
