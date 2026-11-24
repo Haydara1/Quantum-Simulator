@@ -1,5 +1,3 @@
-using System.Security.AccessControl;
-
 namespace QuantumSimulator.Quantum;
 
 using System.Numerics;
@@ -186,4 +184,77 @@ public class QuantumState
     
     #endregion
     
+    
+    #region Comparison operators
+
+    /// <summary>
+    /// Checks if the given object is equal to the considered quantum state.
+    /// If the object is indeed a quantum state, their amplitudes are compared up to a certain tolerance.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public override bool Equals(object? obj)
+    {
+        if (obj == null)
+            return false;
+        
+        if(obj.GetType() != GetType())
+            return false;
+        
+        return Equals((QuantumState)obj);
+    }
+
+    /// <summary>
+    /// Compares to quantum states up to a certain Tolerance.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    private bool Equals(QuantumState other)
+    {
+        // Check that they have the same dimensionality:
+        if (this._amplitudes.Length != other._amplitudes.Length)
+            return false;
+
+        // Compare amplitudes up to a certain tolerance
+        for (int i = 0; i < _amplitudes.Length; i++)
+        {
+            var c1 = this._amplitudes[i];
+            var c2 = other._amplitudes[i];
+            
+            if(Math.Abs(c1.Real - c2.Real) > Util.Epsilon ||
+               Math.Abs(c1.Imaginary - c2.Imaginary) > Util.Epsilon)
+                return false;
+        }
+        
+        return true;
+    }
+    
+    /// <summary>
+    /// Checks if two quantum states are equal (up to a tolerance Epsilon).
+    /// </summary>
+    /// <param name="q1"></param>
+    /// <param name="q2"></param>
+    /// <returns></returns>
+    public static bool operator ==(QuantumState q1, QuantumState q2)
+        => q1.Equals(q2);
+    
+    /// <summary>
+    /// Checks if two quantum states are not equal (up to a tolerance Epsilon).
+    /// </summary>
+    /// <param name="q1"></param>
+    /// <param name="q2"></param>
+    /// <returns></returns>
+    public static bool operator !=(QuantumState q1, QuantumState q2)
+        => !q1.Equals(q2);
+    
+    /// <summary>
+    /// We can't implement a hash code for this object, since the equality is true up to a certain tolerance.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public override int GetHashCode()
+        => throw new NotImplementedException(); 
+
+    #endregion
+
 }
