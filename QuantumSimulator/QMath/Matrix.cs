@@ -92,7 +92,7 @@ internal static class Matrix
     /// <param name="b"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public static Complex[,] Multiply(Complex[,] a, Complex[,] b)
+    internal static Complex[,] Multiply(Complex[,] a, Complex[,] b)
     {
         if (a.GetLength(1) != b.GetLength(0))
             throw new ArgumentException("Can't multiply matrices of unmatching dimensions.");
