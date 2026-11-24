@@ -166,7 +166,7 @@ public class QuantumStateTest
     
     #endregion
     
-    #region Operator Tests
+    #region Dot product Tests
 
     [Fact]
     public void Multiply_RealStates_ReturnsCorrectInnerProduct()
@@ -247,5 +247,151 @@ public class QuantumStateTest
         Assert.Throws<ArgumentException>(() => q1 * q2);
     }
     
+    #endregion
+    
+    #region Outer product Tests
+    
+    [Fact]
+    public void OuterProduct_RealStates_ReturnsCorrectMatrix()
+    {
+        // Arrange
+        var q1 = new QuantumState(new Complex[]
+        {
+            1 / Math.Sqrt(2), 1 / Math.Sqrt(2)
+        });
+
+        var q2 = new QuantumState(new Complex[]
+        {
+            1, 0
+        });
+
+        double expected = 1 / Math.Sqrt(2);
+
+        // Act
+        Complex[,] result = QuantumState.OuterProduct(q1, q2);
+
+        // Assert
+        Assert.True(Complex.Abs(
+            result[0, 0] - new Complex(expected, 0)) < Util.Epsilon);
+
+        Assert.True(Complex.Abs(
+            result[0, 1] - Complex.Zero) < Util.Epsilon);
+
+        Assert.True(Complex.Abs(
+            result[1, 0] - new Complex(expected, 0)) < Util.Epsilon);
+
+        Assert.True(Complex.Abs(
+            result[1, 1] - Complex.Zero) < Util.Epsilon);
+    }
+
+    [Fact]
+    public void OuterProduct_ComplexStates_ReturnsCorrectMatrix()
+    {
+        // Arrange
+        var q1 = new QuantumState(new Complex[]
+        {
+            new Complex(1 / Math.Sqrt(2), 0),
+            new Complex(0, 1 / Math.Sqrt(2))
+        });
+
+        var q2 = new QuantumState(new Complex[]
+        {
+            new Complex(1 / Math.Sqrt(2), 0),
+            new Complex(0, -1 / Math.Sqrt(2))
+        });
+
+        // Act
+        Complex[,] result = QuantumState.OuterProduct(q1, q2);
+
+        // Assert
+        double half = 0.5;
+
+        Assert.True(Complex.Abs(
+            result[0, 0] - new Complex(half, 0)) < Util.Epsilon);
+
+        Assert.True(Complex.Abs(
+            result[0, 1] - new Complex(0, half)) < Util.Epsilon);
+
+        Assert.True(Complex.Abs(
+            result[1, 0] - new Complex(0, half)) < Util.Epsilon);
+
+        Assert.True(Complex.Abs(
+            result[1, 1] - new Complex(-half, 0)) < Util.Epsilon);
+    }
+
+    [Fact]
+    public void OuterProduct_DifferentDimensions_ThrowsArgumentException()
+    {
+        // Arrange
+        var q1 = new QuantumState(new Complex[] { 1, 0 });
+
+        var q2 = new QuantumState(new Complex[]
+        {
+            1, 0, 0, 0
+        });
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(
+            () => QuantumState.OuterProduct(q1, q2));
+    }
+
+    [Fact]
+    public void OuterProduct_NullState_ThrowsArgumentNullException()
+    {
+        // Arrange
+        var q1 = new QuantumState(new Complex[] { 1, 0 });
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(
+            () => QuantumState.OuterProduct(q1, null!));
+
+        Assert.Throws<ArgumentNullException>(
+            () => QuantumState.OuterProduct(null!, q1));
+    }
+
+    [Fact]
+    public void OuterProduct_ReturnsCorrectMatrixDimensions()
+    {
+        // Arrange
+        var q1 = new QuantumState(new Complex[]
+        {
+            0.5, 0.5, 0.5, 0.5
+        });
+
+        // Act
+        Complex[,] result = QuantumState.OuterProduct(q1, q1);
+
+        // Assert
+        Assert.Equal(4, result.GetLength(0));
+        Assert.Equal(4, result.GetLength(1));
+    }
+
+    
+
+    [Fact]
+    public void OuterProduct_SameState_ReturnsHermitianMatrix()
+    {
+        // Arrange
+        var q = new QuantumState(new Complex[]
+        {
+            new Complex(0.5, 0.5),
+            new Complex(0.5, -0.5)
+        });
+
+        // Act
+        Complex[,] result = QuantumState.OuterProduct(q, q);
+
+        // Assert
+        for (int i = 0; i < result.GetLength(0); i++)
+        {
+            for (int j = 0; j < result.GetLength(1); j++)
+            {
+                Assert.True(Complex.Abs(
+                    result[i, j] -
+                    Complex.Conjugate(result[j, i])) < Util.Epsilon);
+            }
+        }
+    }
+
     #endregion
 }
