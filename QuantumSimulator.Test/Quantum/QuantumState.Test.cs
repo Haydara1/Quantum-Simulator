@@ -1,6 +1,7 @@
 namespace QuantumSimulator.Test.Quantum;
 
 using QuantumSimulator.Quantum;
+using QMath;
 using System.Numerics;
 using Xunit;
 
@@ -120,8 +121,8 @@ public class QuantumStateTest
         double probabilityOne = state.GetProbability(0);
 
         // Assert
-        Assert.Equal(0.0, probabilityOne, 1e-10);
-        Assert.Equal(1.0, 1.0 - probabilityOne, 1e-10);
+        Assert.Equal(0.0, probabilityOne, Util.Epsilon);
+        Assert.Equal(1.0, 1.0 - probabilityOne, Util.Epsilon);
     }
 
     [Fact]
@@ -140,8 +141,8 @@ public class QuantumStateTest
         double probabilityOne = state.GetProbability(0);
 
         // Assert
-        Assert.Equal(0.5, probabilityOne, 1e-10);
-        Assert.Equal(0.5, 1.0 - probabilityOne, 1e-10);
+        Assert.Equal(0.5, probabilityOne, Util.Epsilon);
+        Assert.Equal(0.5, 1.0 - probabilityOne, Util.Epsilon);
     }
 
     [Fact]
@@ -159,8 +160,91 @@ public class QuantumStateTest
         });
 
         // Act & Assert
-        Assert.Equal(0.5, state.GetProbability(0), 1e-10);
-        Assert.Equal(0.5, state.GetProbability(1), 1e-10);
+        Assert.Equal(0.5, state.GetProbability(0), Util.Epsilon);
+        Assert.Equal(0.5, state.GetProbability(1), Util.Epsilon);
+    }
+    
+    #endregion
+    
+    #region Operator Tests
+
+    [Fact]
+    public void Multiply_RealStates_ReturnsCorrectInnerProduct()
+    {
+        // Arrange
+        var q1 = new QuantumState(new Complex[] { 1, 0 });
+        var q2 = new QuantumState(new Complex[] { 0, 1 });
+
+        // Act
+        Complex result = q1 * q2;
+
+        // Assert
+        Assert.Equal(0.0, result.Real, Util.Epsilon);
+        Assert.Equal(0.0, result.Imaginary, Util.Epsilon);
+    }
+
+    [Fact]
+    public void Multiply_ComplexStates_ReturnsCorrectInnerProduct()
+    {
+        // Arrange
+        double a = 1.0 / Math.Sqrt(2);
+
+        var q1 = new QuantumState(new Complex[]
+        {
+            a,
+            Complex.ImaginaryOne * a
+        });
+
+        var q2 = new QuantumState(new Complex[]
+        {
+            a,
+            a
+        });
+
+        // Act
+        Complex result = q1 * q2;
+
+        // Expected: 1/2 - i/2
+        // Assert
+        Assert.Equal(0.5, result.Real, Util.Epsilon);
+        Assert.Equal(-0.5, result.Imaginary, Util.Epsilon);
+    }
+
+    [Fact]
+    public void Multiply_StateByItself_ReturnsOne()
+    {
+        // Arrange
+        double a = 1.0 / Math.Sqrt(2);
+
+        var state = new QuantumState(new Complex[]
+        {
+            a,
+            Complex.ImaginaryOne * a
+        });
+
+        // Act
+        Complex result = state * state;
+
+        // Assert
+        Assert.Equal(1.0, result.Real, Util.Epsilon);
+        Assert.Equal(0.0, result.Imaginary, Util.Epsilon);
+    }
+
+    [Fact]
+    public void Multiply_DifferentStateSizes_ThrowsException()
+    {
+        // Arrange
+        var q1 = new QuantumState(new Complex[] { 1, 0 });
+        var q2 = new QuantumState(new Complex[]
+        {
+            1.0 / Math.Sqrt(2),
+            0,
+            0,
+            1.0 / Math.Sqrt(2)
+        });
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => q1 * q2);
     }
     
     #endregion
