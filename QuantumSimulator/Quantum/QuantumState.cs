@@ -158,7 +158,7 @@ public class QuantumState
     private static Complex Dot(QuantumState q1, QuantumState q2)
     {
         // Check that the quantum states aren't null.
-        if(q1 == null || q2 == null)
+        if(q1 is null || q2 is null)
             throw new ArgumentNullException();
         
         // Check that the quantum states are in the same dimension
@@ -235,8 +235,16 @@ public class QuantumState
     /// <param name="q1"></param>
     /// <param name="q2"></param>
     /// <returns></returns>
-    public static bool operator ==(QuantumState q1, QuantumState q2)
-        => q1.Equals(q2);
+    public static bool operator ==(QuantumState? q1, QuantumState? q2)
+    {
+        if (ReferenceEquals(q1, q2))
+            return true;
+
+        if (q1 is null || q2 is null)
+            return false;
+
+        return q1.Equals(q2);
+    }
     
     /// <summary>
     /// Checks if two quantum states are not equal (up to a tolerance Epsilon).
@@ -244,8 +252,8 @@ public class QuantumState
     /// <param name="q1"></param>
     /// <param name="q2"></param>
     /// <returns></returns>
-    public static bool operator !=(QuantumState q1, QuantumState q2)
-        => !q1.Equals(q2);
+    public static bool operator !=(QuantumState? q1, QuantumState? q2)
+        => !(q1 == q2);
     
     /// <summary>
     /// We can't implement a hash code for this object, since the equality is true up to a certain tolerance.
