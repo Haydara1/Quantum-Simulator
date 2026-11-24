@@ -3,6 +3,7 @@ using System.Security.AccessControl;
 namespace QuantumSimulator.Quantum;
 
 using System.Numerics;
+using QMath;
 
 /// <summary>
 /// Quantum vector state class.
@@ -10,9 +11,6 @@ using System.Numerics;
 public class QuantumState
 {
     #region Attributes
-    
-    // Tolerance rate.
-    private const double Epsilon = 1e-10;
     
     /// <summary>
     /// The amplitudes of the quantum state.
@@ -106,7 +104,7 @@ public class QuantumState
         foreach (var amplitude in amplitudes)
             normSquared += amplitude.Magnitude * amplitude.Magnitude;
         
-        return Math.Abs(normSquared - 1.0) < Epsilon;
+        return Math.Abs(normSquared - 1.0) < Util.Epsilon;
     }
 
     /// <summary>
