@@ -1,3 +1,5 @@
+using System.Security.AccessControl;
+
 namespace QuantumSimulator.Quantum;
 
 using System.Numerics;
@@ -145,6 +147,45 @@ public class QuantumState
         return listOfAmplitudes;
     }
 
+    #endregion
+    
+    #region Operators
+
+    /// <summary>
+    /// Calculates the Dot product of two state vectors.
+    /// </summary>
+    /// <param name="q1"></param>
+    /// <param name="q2"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
+    private static Complex Dot(QuantumState q1, QuantumState q2)
+    {
+        // Check that the quantum states aren't null.
+        if(q1 == null || q2 == null)
+            throw new ArgumentNullException();
+        
+        // Check that the quantum states are in the same dimension
+        if (q1._amplitudes.Length != q2._amplitudes.Length)
+            throw new ArgumentException("Quantum state must have the same dimensionality.");
+        
+        Complex result = Complex.Zero;
+
+        for (int i = 0; i < q1._amplitudes.Length; i++)
+            result += Complex.Conjugate(q1._amplitudes[i]) * q2._amplitudes[i];
+        
+        return result;
+    }
+    
+    /// <summary>
+    /// Calculates the Dot product of two state vectors.
+    /// </summary>
+    /// <param name="q1"></param>
+    /// <param name="q2"></param>
+    /// <returns></returns>
+    public static Complex operator *(QuantumState q1, QuantumState q2)
+        => Dot(q1, q2);
+    
     #endregion
     
 }
