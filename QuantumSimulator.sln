@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSimulator", "QuantumSimulator\QuantumSimulator.csproj", "{A10A58C6-8837-40BD-9AB2-F5786E373CDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantumSimulator.Test", "QuantumSimulator.Test\QuantumSimulator.Test.csproj", "{3F54365E-D70F-4992-BF85-DF3706721EBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{A10A58C6-8837-40BD-9AB2-F5786E373CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A10A58C6-8837-40BD-9AB2-F5786E373CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A10A58C6-8837-40BD-9AB2-F5786E373CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F54365E-D70F-4992-BF85-DF3706721EBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F54365E-D70F-4992-BF85-DF3706721EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F54365E-D70F-4992-BF85-DF3706721EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F54365E-D70F-4992-BF85-DF3706721EBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
