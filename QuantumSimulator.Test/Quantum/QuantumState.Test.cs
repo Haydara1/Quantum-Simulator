@@ -6,6 +6,8 @@ using Xunit;
 
 public class QuantumStateTest
 {
+    #region Constructor Tests
+    
     [Fact]
     public void Constructor_ValidAmplitudes_CreatesState()
     {
@@ -100,6 +102,9 @@ public class QuantumStateTest
         Assert.Equal(Complex.One, state.Amplitudes[0]);
     }
 
+    #endregion
+    
+    #region GetProbability Tests
     
     [Fact]
     public void GetProbability_ZeroState_ReturnsZero()
@@ -157,4 +162,6 @@ public class QuantumStateTest
         Assert.Equal(0.5, state.GetProbability(0), 1e-10);
         Assert.Equal(0.5, state.GetProbability(1), 1e-10);
     }
+    
+    #endregion
 }
