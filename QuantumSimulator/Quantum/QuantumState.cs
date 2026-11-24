@@ -17,10 +17,9 @@ public class QuantumState
     public IReadOnlyList<Complex> Amplitudes => _amplitudes;
     
     // Store the number of the Qubits:
-    private int _qubitCount;
-    
-    public int QubitCount => _qubitCount;
-    
+
+    public int QubitCount { get; private set; }
+
     #endregion
     
     #region Constructors
@@ -46,7 +45,7 @@ public class QuantumState
         if(!IsNormalized(amplitudes))
             throw new ArgumentException("Invalid amplitudes (array should be normalized).");
         
-        _qubitCount = BitOperations.Log2((uint)amplitudes.Length);
+        QubitCount = BitOperations.Log2((uint)amplitudes.Length);
         
         _amplitudes = (Complex[])amplitudes.Clone(); // Clone the array so it can't be modified using the parameter.
     }
@@ -65,7 +64,7 @@ public class QuantumState
     public double GetProbability(int qubitIndex)
     {
         // Check the right index of the qubit.
-        if (qubitIndex < 0 || qubitIndex >= _qubitCount)
+        if (qubitIndex < 0 || qubitIndex >= QubitCount)
             throw new ArgumentOutOfRangeException(nameof(qubitIndex));
         
         Complex[] listOfAmplitudes = GetAmplitudes(qubitIndex);
@@ -114,7 +113,7 @@ public class QuantumState
     private Complex[] GetAmplitudes(int qubitIndex)
     {
         // Be aware of integer overflow
-        if (qubitIndex < 0 || qubitIndex >= _qubitCount)
+        if (qubitIndex < 0 || qubitIndex >= QubitCount)
             throw new ArgumentOutOfRangeException(nameof(qubitIndex));
         
         int bit = 1; // Start with a bit in this form 00..001
@@ -181,6 +180,40 @@ public class QuantumState
     /// <returns></returns>
     public static Complex operator *(QuantumState q1, QuantumState q2)
         => Dot(q1, q2);
+
+    /// <summary>
+    /// Returns the outer product of two quantum state vectors as a density matrix.
+    /// </summary>
+    /// <param name="q1"></param>
+    /// <param name="q2"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
+    public static Complex[,] OuterProduct(QuantumState q1, QuantumState q2)
+    {
+        // Check if the arguments are null.
+        if (q1 is null || q2 is null)
+            throw new ArgumentNullException();
+        
+        // Check if the state vectors have the same dimensions
+        if(q1.Amplitudes.Count != q2.Amplitudes.Count)
+            throw new ArgumentException("Quantum state must have the same dimensionality.");
+        
+        // Initialize the density matrix
+        Complex[,] outputMatrix = new Complex[q1.Amplitudes.Count, q1.Amplitudes.Count];
+
+        for (int i = 0; i < q1.Amplitudes.Count; i++)
+        {
+            for (int j = 0; j < q1.Amplitudes.Count; j++)
+            {
+                // Refer to matrix multiplication for this line:
+                outputMatrix[i, j] = q1.Amplitudes[i] *
+                                      Complex.Conjugate(q2.Amplitudes[j]);
+            }
+        }
+
+        return outputMatrix;
+    }
     
     #endregion
     
