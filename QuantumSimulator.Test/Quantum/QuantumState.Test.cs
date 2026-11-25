@@ -1,7 +1,7 @@
 namespace QuantumSimulator.Test.Quantum;
 
 using QuantumSimulator.Quantum;
-using QMath;
+using QuantumSimulator.QMath;
 using System.Numerics;
 using Xunit;
 
