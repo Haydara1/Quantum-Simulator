@@ -3,6 +3,7 @@ namespace QuantumSimulator.Test.Quantum;
 using System.Numerics;
 using Xunit;
 using QuantumSimulator.Quantum;
+using QuantumSimulator.QMath;
 
 public class DensityMatrixTests
 {
@@ -116,6 +117,69 @@ public class DensityMatrixTests
         // Act & Assert
         Assert.Throws<ArgumentException>(
             () => new DensityMatrix(matrix));
+    }
+    
+    #endregion
+    
+    #region Get purity tests
+    
+    [Fact]
+    public void GetPurity_PureState_ReturnsOne()
+    {
+        // Arrange
+        Complex[,] matrix =
+        {
+            { 1, 0 },
+            { 0, 0 }
+        };
+
+        var densityMatrix = new DensityMatrix(matrix);
+
+        // Act
+        Complex result = densityMatrix.GetPurity();
+
+        // Assert
+        Assert.True(Complex.Abs(result - Complex.One) < Util.Epsilon);
+    }
+
+    [Fact]
+    public void GetPurity_MaximallyMixedState_ReturnsHalf()
+    {
+        // Arrange
+        Complex[,] matrix =
+        {
+            { 0.5, 0 },
+            { 0, 0.5 }
+        };
+
+        var densityMatrix = new DensityMatrix(matrix);
+
+        // Act
+        Complex result = densityMatrix.GetPurity();
+
+        // Assert
+        Assert.True(
+            Complex.Abs(result - new Complex(0.5, 0)) < Util.Epsilon);
+    }
+
+    [Fact]
+    public void GetPurity_MixedState_ReturnsCorrectValue()
+    {
+        // Arrange
+        Complex[,] matrix =
+        {
+            { 0.75, 0 },
+            { 0, 0.25 }
+        };
+
+        var densityMatrix = new DensityMatrix(matrix);
+
+        // Act
+        Complex result = densityMatrix.GetPurity();
+
+        // Assert
+        Assert.True(
+            Complex.Abs(result - new Complex(0.625, 0)) < Util.Epsilon);
     }
     
     #endregion
