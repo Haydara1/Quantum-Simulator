@@ -74,4 +74,5 @@ public class DensityMatrix
         => Matrix.Trace(Matrix.Multiply(Amplitudes, Amplitudes));
     
     #endregion
+    
 }
