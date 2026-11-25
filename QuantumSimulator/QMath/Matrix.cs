@@ -1,8 +1,11 @@
 namespace QuantumSimulator.QMath;
 
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
-internal static class Matrix
+// Make visible to the xunit project:
+[Assembly: InternalsVisibleTo("QuantumSimulator.Test")]
+public static class Matrix
 {
     #region Internal static functions
     
@@ -111,6 +114,39 @@ internal static class Matrix
                 result[i, j] = coefficient;
             }
         }
+        
+        return result;
+    }
+
+    /// <summary>
+    /// Calculates the tensor product of two complex matrices.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static Complex[,] Tensor(Complex[,] a, Complex[,] b)
+    {
+        if (a == null || b == null)
+            throw new ArgumentNullException();
+
+        // Define rows and columns
+        var rowsA = a.GetLength(0);
+        var colsA = a.GetLength(1);
+
+        var rowsB = b.GetLength(0);
+        var colsB = b.GetLength(1);
+
+        Complex[,] result = new Complex[
+            rowsA * rowsB,
+            colsA * colsB
+        ];
+
+        for (var i = 0; i < rowsA; i++)
+            for (var j = 0; j < colsA; j++)
+                for (var k = 0; k < rowsB; k++)
+                    for (var l = 0; l < colsB; l++)
+                        result[i * rowsB + k, j * colsB + l] = a[i, j] * b[k, l];
         
         return result;
     }
