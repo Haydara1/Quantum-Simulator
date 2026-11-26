@@ -1,6 +1,7 @@
 namespace QuantumSimulator.QMath;
 
 using System.Numerics;
+using Quantum;
 
 // Make visible to the xunit project:
 internal static class Matrix
@@ -148,9 +149,52 @@ internal static class Matrix
         
         return result;
     }
+
+    /// <summary>
+    /// Calculates the tensor product of two quantum states.
+    /// </summary>
+    /// <param name="q1"></param>
+    /// <param name="q2"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    internal static Complex[,] Tensor(QuantumState q1, QuantumState q2)
+    {
+        if (q1 == null || q2 == null)
+            throw new ArgumentNullException();
+        
+        // Get the complex matrices of the quantum states (column vectors)
+        Complex[,] columnQ1 = TransposeRowVector((Complex[]) q1.Amplitudes);
+        Complex[,] columnQ2 = TransposeRowVector((Complex[]) q2.Amplitudes);
+        
+        return Tensor(columnQ1, columnQ2);
+    }
     
     
+    #endregion
     
+    #region Private functions
+
+    /// <summary>
+    /// Transposes a row vector.
+    /// </summary>
+    /// <param name="a"></param>
+    /// <returns></returns>
+    private static Complex[,] TransposeRowVector(Complex[] a)
+    {
+        // Create a column vector 
+        Complex[,] output = new Complex[a.Length, 1];
+        
+        for(int i = 0; i < a.Length; i++)
+            output[i, 0] = a[i];
+        
+        return output;
+    }
+
+
+    private static Complex[,] TransposeColumnVector(Complex[,] a)
+    {
+        throw new NotImplementedException();
+    }
     #endregion
     
 }
