@@ -110,6 +110,11 @@ public class MatrixTest
         );
     }
 
+    
+    #endregion
+    
+    #region Private functions
+    
     private static void AssertMatrixEqual(
         Complex[,] expected,
         Complex[,] actual)
@@ -130,5 +135,5 @@ public class MatrixTest
         }
     }
     
-    #endregion
+    # endregion 
 }
