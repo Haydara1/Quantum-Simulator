@@ -1,11 +1,9 @@
 namespace QuantumSimulator.QMath;
 
 using System.Numerics;
-using System.Runtime.CompilerServices;
 
 // Make visible to the xunit project:
-[Assembly: InternalsVisibleTo("QuantumSimulator.Test")]
-public static class Matrix
+internal static class Matrix
 {
     #region Internal static functions
     
@@ -125,7 +123,7 @@ public static class Matrix
     /// <param name="b"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public static Complex[,] Tensor(Complex[,] a, Complex[,] b)
+    internal static Complex[,] Tensor(Complex[,] a, Complex[,] b)
     {
         if (a == null || b == null)
             throw new ArgumentNullException();
@@ -150,6 +148,8 @@ public static class Matrix
         
         return result;
     }
+    
+    
     
     #endregion
     
