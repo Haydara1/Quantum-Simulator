@@ -51,8 +51,7 @@ public class MatrixTest
         // Assert
         AssertMatrixEqual(expected, result);
     }
-
-    // TODO Check test:
+    
     [Fact]
     public void Tensor_ComplexMatrices_ReturnsCorrectMatrix()
     {
@@ -72,7 +71,7 @@ public class MatrixTest
         {
             {
                 new Complex(-1, 3),
-                new Complex(4, 2)
+                new Complex(4, 3)
             },
             {
                 new Complex(4, 2),
