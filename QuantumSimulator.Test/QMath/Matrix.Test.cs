@@ -1,6 +1,7 @@
 namespace QuantumSimulator.Test.QMath;
 
 using QuantumSimulator.QMath;
+using QuantumSimulator.Quantum;
 using System.Numerics;
 using Xunit;
 
@@ -110,6 +111,60 @@ public class MatrixTest
         );
     }
 
+    [Fact]
+    public void Tensor_ThreeZeroQuantumState()
+    {
+        // Arrange
+        QuantumState stateZero = new QuantumState(new Complex[]
+        {
+             1, 0
+        });
+
+        QuantumState expected = new QuantumState(new Complex[]
+            {
+                1, 0, 0, 0, 0, 0, 0, 0
+            }
+        );
+        
+        // Act
+        QuantumState result = Matrix.Tensor(
+            Matrix.Tensor(stateZero, stateZero),
+            stateZero);
+        
+        // Assert
+        Assert.Equal(expected, result);
+    }
+
+
+    [Fact]
+    public void Tensor_ZeroOneOneQuantumState()
+    {
+        // Arrange
+        QuantumState stateZero = new QuantumState(new Complex[]
+        {
+            1, 0
+        });
+        
+        QuantumState stateOne = new QuantumState(new Complex[]
+        {
+            0, 1
+        });
+
+        QuantumState expected = new QuantumState(new Complex[]
+            {
+                0, 0, 0, 1, 0, 0, 0, 0
+            }
+        );
+        
+        // Act
+        QuantumState result = Matrix.Tensor(
+            Matrix.Tensor(stateZero, stateOne),
+            stateOne);
+        
+        
+        // Assert
+        Assert.Equal(expected, result);
+    }
     
     #endregion
     
