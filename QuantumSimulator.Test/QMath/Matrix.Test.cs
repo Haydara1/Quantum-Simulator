@@ -112,7 +112,7 @@ public class MatrixTest
     }
 
     [Fact]
-    public void Tensor_ThreeZeroQuantumState()
+    public void Tensor_ThreeZeroQuantumState_ReturnsCorrectMatrix()
     {
         // Arrange
         QuantumState stateZero = new QuantumState(new Complex[]
@@ -137,7 +137,7 @@ public class MatrixTest
 
 
     [Fact]
-    public void Tensor_ZeroOneOneQuantumState()
+    public void Tensor_ZeroOneOneQuantumState_ReturnsCorrectMatrix()
     {
         // Arrange
         QuantumState stateZero = new QuantumState(new Complex[]
