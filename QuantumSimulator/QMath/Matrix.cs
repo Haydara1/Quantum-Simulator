@@ -172,7 +172,6 @@ internal static class Matrix
         return new QuantumState(TransposeColumnVector(columnStateVector));
     }
     
-    
     #endregion
     
     #region Private functions
